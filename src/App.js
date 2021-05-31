@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Button from "./Button";
+import InputForm from "./InputForm";
+import Users from "./Users";
+import { useState } from "react";
+import ErrorModal from "./ErrorModal";
 
 function App() {
+  const [userList, setUserList] = useState([]);
+  const [error, setError] = useState();
+
+  const addUserToListHandler = (user) => {
+    setUserList((prevstate) => [...prevstate, user]);
+  };
+
+  const cancelModalHandler = () => {
+    setError(null);
+  };
+
+  const errorHandler = (title1, message1) => {
+    setError({ title: title1, message: message1 });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          cancel={cancelModalHandler}
+        ></ErrorModal>
+      )}
+      <InputForm
+        addUser={addUserToListHandler}
+        addError={errorHandler}
+      ></InputForm>
+      <Users userList={userList}></Users>
     </div>
   );
 }
