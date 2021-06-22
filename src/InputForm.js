@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Button from "./Button";
 import Card from "./Card";
 import classes from "./inputForm.module.css";
@@ -9,9 +9,20 @@ const InputForm = (props) => {
   const ageRef = useRef();
   const userRef = useRef();
 
+  useEffect(() => {
+    console.log(enteredUserName);
+    console.log(enteredAge);
+    if (enteredUserName.length > 0 && enteredAge > 0) {
+      props.addUser({
+        key: Math.random().toString(),
+        name: enteredUserName,
+        age: enteredAge,
+      });
+    }
+  }, [enteredUserName, enteredAge]);
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-
     const refUserName = userRef.current.value;
     const refAgeName = ageRef.current.value;
 
@@ -30,11 +41,11 @@ const InputForm = (props) => {
     //     return;
     //   }
 
-    props.addUser({
-      key: Math.random().toString(),
-      name: enteredUserName,
-      age: enteredAge,
-    });
+    // props.addUser({
+    //   key: Math.random().toString(),
+    //   name: enteredUserName,
+    //   age: enteredAge,
+    // });
     //   setenteredUserName("");
     //   setenteredAge("");
   };
@@ -67,7 +78,7 @@ const InputForm = (props) => {
         ></input>
         <Button type="submit">Add user</Button>
       </form>
-      {`Latest State is ${enteredAge} and ${enteredUserName}`}
+      {/* {`Latest State is ${enteredAge} and ${enteredUserName}`}   */}
     </Card>
   );
 };
